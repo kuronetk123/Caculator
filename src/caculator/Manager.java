@@ -10,60 +10,107 @@ import java.util.Scanner;
  *
  * @author ADMIN
  */
-class Manager extends Menu {
+class Manager {
+    private  Scanner scanner;
 
     public Manager(Scanner scanner) {
-        super(scanner);
-        
+        this.scanner = scanner;
     }
+
     public int menu() {
-        String[] options = {"Calculate Superlative Equation", "Calculate Quadratic Equation", "Exit"};
-        int choice = getChoice("Main Menu", options);
+        Menu menu = new Menu(scanner);
+        String[] options = {"Normal Calculator", "BMI Calculator", "Exit"};
+        int choice = menu.getChoice("Main Menu", options);
         return choice;
     }
 
-    public void superlativeEquation() {
-        System.out.print("Enter A: ");
-        double a = checkInputDouble();
-        System.out.print("Enter B: ");
-        double b = checkInputDouble();
-        double x = -b / a;
-        System.out.println("Solution: x=" + x);
-        printProperty("Number is odd:", checkOdd(a), checkOdd(b), checkOdd(x));
-        printProperty("Number is even:", checkEven(a), checkEven(b), checkEven(x));
-        printProperty("Number is perfect square:", checkSquareNumber(a), checkSquareNumber(b), checkSquareNumber(x));
-    }
-
-    public void quadraticEquation() {
-        System.out.print("Enter A: ");
-        double a = checkInputDouble();
-        System.out.print("Enter B: ");
-        double b = checkInputDouble();
-        System.out.print("Enter C: ");
-        double c = checkInputDouble();
-        double delta = b * b - 4 * a * c;
-        double x1 = (-b + Math.sqrt(delta)) / (2 * a);
-        double x2 = (-b - Math.sqrt(delta)) / (2 * a);
-        System.out.println("Solution: x1 = " + x1 + " and x2 = " + x2);
-        printProperty("Number is odd:", checkOdd(a), checkOdd(b), checkOdd(c), checkOdd(x1), checkOdd(x2));
-        printProperty("Number is even:", checkEven(a), checkEven(b), checkEven(c), checkEven(x1), checkEven(x2));
-        printProperty("Number is perfect square:", checkSquareNumber(a), checkSquareNumber(b), checkSquareNumber(c), checkSquareNumber(x1), checkSquareNumber(x2));
-    }
-
-    private void printProperty(String label, boolean... properties) {
-        System.out.print(label + " ");
-        for (boolean property : properties) {
-            if (property) {
-                System.out.print("true ");
-            } else {
-                System.out.print("false ");
+    public void normalCalculator() {
+        double memory;
+        System.out.print("Enter number: ");
+        memory = checkInputDouble();
+        while (true) {
+            System.out.print("Enter operator: ");
+            String operator = checkInputOperator();
+            if (operator.equalsIgnoreCase("+")) {
+                memory += inputNumber();
+                System.out.println("Memory: " + memory);
+            }
+            if (operator.equalsIgnoreCase("-")) {
+                memory -= inputNumber();
+                System.out.println("Memory: " + memory);
+            }
+            if (operator.equalsIgnoreCase("*")) {
+                memory *= inputNumber();
+                System.out.println("Memory: " + memory);
+            }
+            if (operator.equalsIgnoreCase("/")) {
+                memory /= inputNumber();
+                System.out.println("Memory: " + memory);
+            }
+            if (operator.equalsIgnoreCase("^")) {
+                memory = Math.pow(memory, inputNumber());
+                System.out.println("Memory: " + memory);
+            }
+            if (operator.equalsIgnoreCase("=")) {
+                System.out.println("Result: " + memory);
+                return;
             }
         }
-        System.out.println();
     }
 
-    @Override
-    public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void BMICalculator() {
+        System.out.print("Enter Weight(kg): ");
+        double weight = checkInputDouble();
+        System.out.print("Enter Height(cm): ");
+        double height = checkInputDouble();
+        double bmi = weight * 10000 / (height * height);
+        System.out.printf("BMI number: %.2f\n", bmi);
+        System.out.println("BMI Status: " + BMIStatus(bmi));
+    }
+
+    private double checkInputDouble() {
+        while (true) {
+            try {
+                double result = Double.parseDouble(scanner.nextLine());
+                return result;
+            } catch (NumberFormatException e) {
+                System.err.println("Must be input double");
+                System.out.print("Enter again: ");
+            }
+        }
+    }
+
+    private String checkInputOperator() {
+        while (true) {
+            String result = scanner.nextLine().trim();
+            if (result.isEmpty()) {
+                System.err.println("Not empty");
+            } else if (result.matches("[+\\-*/^=]")) {
+                return result;
+            } else {
+                System.err.println("Please input (+, -, *, /, ^, =)");
+            }
+            System.out.print("Enter again: ");
+        }
+    }
+
+    private double inputNumber() {
+        System.out.print("Enter number: ");
+        double number = checkInputDouble();
+        return number;
+    }
+
+    private String BMIStatus(double bmi) {
+        if (bmi < 19) {
+            return "Under-standard.";
+        } else if (bmi >= 19 && bmi < 25) {
+            return "Standard.";
+        } else if (bmi >= 25 && bmi < 30) {
+            return "Overweight.";
+        } else if (bmi >= 30 && bmi < 40) {
+            return "Fat-should lose weight";
+        } else {
+            return "Very fat - should lose weight immediately";
+        }
     }
 }

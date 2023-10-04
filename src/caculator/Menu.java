@@ -10,15 +10,12 @@ import java.util.Scanner;
  *
  * @author ADMIN
  */
-abstract class Menu {
+class Menu {
     private Scanner scanner;
 
     public Menu(Scanner scanner) {
         this.scanner = scanner;
     }
-
-
-    public abstract void execute();
 
     public int getChoice(String title, String[] options) {
         System.out.println("");
@@ -35,28 +32,5 @@ abstract class Menu {
 
         return Integer.parseInt(choice);
     }
-
-    public double checkInputDouble() {
-        while (true) {
-            try {
-                double result = Double.parseDouble(scanner.nextLine());
-                return result;
-            } catch (NumberFormatException e) {
-                System.err.println("Must be input double");
-                System.out.print("Enter again: ");
-            }
-        }
-    }
-
-    public boolean checkOdd(double n) {
-        return n % 2 == 1;
-    }
-
-    public boolean checkEven(double n) {
-        return n % 2 == 0;
-    }
-
-    public boolean checkSquareNumber(double n) {
-        return Math.sqrt(n) % 1 == 0;
-    }
 }
+

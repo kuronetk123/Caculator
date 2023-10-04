@@ -8,6 +8,7 @@ package caculator;
  *
  * @author ADMIN
  */
+
 import java.util.Scanner;
 
 public class Calculator {
@@ -20,10 +21,10 @@ public class Calculator {
             int choice = manager.menu();
             switch (choice) {
                 case 1:
-                    manager.superlativeEquation();
+                    manager.normalCalculator();
                     break;
                 case 2:
-                    manager.quadraticEquation();
+                    manager.BMICalculator();
                     break;
                 case 3:
                     return;
@@ -32,4 +33,4 @@ public class Calculator {
             }
         }
     }
-} 
+}
